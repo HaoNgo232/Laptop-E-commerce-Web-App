@@ -42,6 +42,28 @@ This project provides a comprehensive foundation for an e-commerce platform cate
 
 ---
 
+### Visual Preview
+
+<p align="center">
+  <img src="docs/images/home.png" alt="Home Page Preview" width="800" /><br>
+  <i>Modern Storefront: Dynamic Hero Banner and Highlighted Products.</i>
+</p>
+
+<p align="center">
+  <img src="docs/images/category.png" alt="Category Browsing" width="800" /><br>
+  <i>Visual Navigation: Intuitive category selection tailored for laptops and electronics.</i>
+</p>
+
+<p align="center">
+  <img src="docs/images/product.png" alt="Product Listing" width="800" /><br>
+  <i>Catalog Search: Clean layout for browsing extensive product inventories.</i>
+</p>
+
+<p align="center">
+  <img src="docs/images/pruduct-detail.png" alt="Product Detail View" width="800" /><br>
+  <i>Product Specifications: Deep dive into technical details, customer reviews, and cart actions.</i>
+</p>
+
 ## Features
 
 - **Authentication & Authorization:** Register/Login, JWT access + refresh tokens, role-based guards (User/Admin).
