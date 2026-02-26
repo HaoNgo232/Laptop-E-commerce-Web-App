@@ -153,11 +153,15 @@ Web-Ecom/
 ## Setup & Installation (Docker & Local)
 
 ### Quick Start (Docker)
-Prerequisites: Docker and Docker Compose installed.
+Prerequisites: **Docker** and **Docker Desktop** installed and running.
 
 ```bash
-# From project root
-docker compose up -d
+# Clone the repository and navigate inside
+git clone https://github.com/HaoNgo232/laptop-shop.git
+cd laptop-shop
+
+# Start the cluster and implicitly force a build
+docker compose up -d --build
 ```
 
 Services (defaults):
