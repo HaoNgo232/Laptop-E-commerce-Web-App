@@ -36,32 +36,32 @@ Full-stack e-commerce web application specialized for selling laptops. Built wit
 <!-- Updated: Expanded Project Overview -->
 ## Project Overview
 
-This project provides a comprehensive foundation for an e-commerce platform catered specifically to electronic goods like laptops. 
+This project is a full-stack e-commerce application for selling laptops and electronics.
 
-**Problem it solves:** Providing a complete out-of-the-box shop experience that handles dynamic catalog filtering, shopping cart persistence, role-based access control, tiered user discounts (Bronze, Silver, Gold, Diamond), and native Vietnamese QR banking payments via SePay integration out of the box.
+It handles product catalog browsing, shopping cart, JWT authentication, role-based access, rank-based user discounts (Bronze/Silver/Gold/Diamond), SePay QR banking payments (and COD), product reviews, admin dashboard, and transactional email.
 
 ---
 
 ### Visual Preview
 
 <p align="center">
-  <img src="docs/images/home.png" alt="Home Page Preview" width="800" /><br>
-  <i>Modern Storefront: Dynamic Hero Banner and Highlighted Products.</i>
+  <img src="docs/images/home.png" alt="Home Page" width="800" /><br>
+  <i>Home page with banner and product highlights.</i>
 </p>
 
 <p align="center">
   <img src="docs/images/category.png" alt="Category Browsing" width="800" /><br>
-  <i>Visual Navigation: Intuitive category selection tailored for laptops and electronics.</i>
+  <i>Category browsing page.</i>
 </p>
 
 <p align="center">
   <img src="docs/images/product.png" alt="Product Listing" width="800" /><br>
-  <i>Catalog Search: Clean layout for browsing extensive product inventories.</i>
+  <i>Product listing page with search and filters.</i>
 </p>
 
 <p align="center">
-  <img src="docs/images/pruduct-detail.png" alt="Product Detail View" width="800" /><br>
-  <i>Product Specifications: Deep dive into technical details, customer reviews, and cart actions.</i>
+  <img src="docs/images/pruduct-detail.png" alt="Product Detail" width="800" /><br>
+  <i>Product detail page with specs, reviews, and cart actions.</i>
 </p>
 
 ## Features
@@ -80,7 +80,7 @@ This project provides a comprehensive foundation for an e-commerce platform cate
 <!-- Updated: Added Mermaid diagram and reasoning -->
 ## Architecture & Design Decisions
 
-The application follows a **Monolithic Client-Server Architecture** featuring strict Separation of Concerns.
+The application follows a **Monolithic Client-Server Architecture** with Separation of Concerns.
 
 ```mermaid
 graph TD;
@@ -101,8 +101,8 @@ graph TD;
 ```
 
 **Key Design Decisions:**
-1. **Modular Monolith:** Kept deployment simple in a single backend instance, but heavily isolated domains internally (using Clean Architecture patterns like `controllers`, `services`, `usecases`, `dtos`) within NestJS. This enables easy extraction into microservices later if scaling demands it.
-2. **Client-side Routing & Server State:** The React SPA uses `react-router-dom` for application views and `TanStack Query` for caching backend state, significantly reducing complex Redux/Zustand global stores to only local UI state.
+1. **Modular Monolith:** Deployment is kept simple with a single backend instance, but domains are isolated internally using standard NestJS module patterns (`controllers`, `services`, `dtos`, `entities`). This makes it possible to extract into microservices later if needed.
+2. **Client-side Routing & Server State:** The React SPA uses `react-router-dom` for views and `TanStack Query` for caching server data, reducing the need for complex global state management.
 
 ---
 
@@ -110,15 +110,15 @@ graph TD;
 ## Tech Stack & Dependencies
 
 - **Backend:** 
-  - **NestJS 11** & **TypeScript:** Strict typing and extensive decorators pattern. 
-  - **TypeORM & PostgreSQL:** Highly reliable relational data integrity for e-commerce transactions. 
-  - **Bcrypt & JWT:** Stateless secure sessions. 
-  - **@nestjs-modules/mailer (EJS):** Easy templating for transactional emails.
+  - **NestJS 11** & **TypeScript:** Typed backend framework with decorator-based architecture. 
+  - **TypeORM & PostgreSQL:** Relational database for e-commerce data. 
+  - **Bcrypt & JWT:** Password hashing and stateless authentication. 
+  - **@nestjs-modules/mailer (EJS):** Templating for transactional emails.
 - **Frontend:** 
-  - **React 19 & Vite 6:** Modern, lightning-fast HMR and build tools. 
-  - **TailwindCSS 4 & shadcn/ui:** Beautiful, highly-customizable atomic component designs that are owned by the repository rather than opaque libraries.
-  - **Zustand 5 & TanStack Query 5:** Minimal boilerplate for client state, paired with robust automated caching/refetching for server data.
-- **Infra:** Docker & Docker Compose for normalized Dev/Prod parity.
+  - **React 19 & Vite 6:** Fast HMR and build tooling. 
+  - **TailwindCSS 4 & shadcn/ui:** Component library with full source ownership. 
+  - **Zustand 5 & TanStack Query 5:** Client state management with server data caching.
+- **Infra:** Docker & Docker Compose.
 
 ---
 
@@ -129,7 +129,7 @@ graph TD;
 
 ```
 Web-Ecom/
-├── backend/                  # NestJS API Engine
+├── backend/                  # NestJS API
 │   └── src/
 │       ├── auth/             # JWT, Guards, Strategies
 │       ├── cart/             # Shopping Cart Entity & Sessions
