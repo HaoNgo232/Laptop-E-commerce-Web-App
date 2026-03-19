@@ -28,8 +28,6 @@ Full-stack e-commerce web application specialized for selling laptops. Built wit
 - [Troubleshooting](#troubleshooting)
 - [Testing](#testing)
 - [Demo Accounts](#demo-accounts)
-- [Contributing](#contributing)
-- [Roadmap](#roadmap)
 
 ---
 
