@@ -320,26 +320,6 @@ For rapid evaluations on cloned repositories where `pnpm seed` has been run:
 
 ---
 
-<!-- Added: Contributing section -->
-## Contributing
-
-1. Fork the Repository
-2. Checkout a new feature branch (`git checkout -b feature/awesome-addition`)
-3. Commit your changes with descriptive semantics (`git commit -m "feat: adding new wishlists module"`)
-4. Verify changes locally following the [Development Guidelines](#development-guidelines)
-5. Push to the branch & open a Pull Request!
-
----
-
-## Roadmap / Future Work
-
-- [ ] ML-based product recommendations & RAG Chatbot implementations.
-- [ ] Advanced search mechanisms mapped through Elasticsearch or PG-Trigram.
-- [ ] Incorporate additional Payment Gateways (VNPay, MoMo, ZaloPay).
-- [ ] Improved generic mobile PWA UX / Service Workers routing.
-
----
-
 <p align="center">
   MIT &copy; HaoNgo232
 </p>
