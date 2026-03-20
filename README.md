@@ -1,4 +1,5 @@
 # Laptop E-commerce Web App
+
 <p>
   <img src="https://img.shields.io/badge/NestJS-11-E0234E?logo=nestjs&logoColor=white" alt="NestJS" />
   <img src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white" alt="React" />
@@ -32,6 +33,7 @@ Full-stack e-commerce web application specialized for selling laptops. Built wit
 ---
 
 <!-- Updated: Expanded Project Overview -->
+
 ## Project Overview
 
 This project is a full-stack e-commerce application for selling laptops and electronics.
@@ -76,6 +78,7 @@ It handles product catalog browsing, shopping cart, JWT authentication, role-bas
 ---
 
 <!-- Updated: Added Mermaid diagram and reasoning -->
+
 ## Architecture & Design Decisions
 
 The application follows a **Monolithic Client-Server Architecture** with Separation of Concerns.
@@ -84,12 +87,12 @@ The application follows a **Monolithic Client-Server Architecture** with Separat
 graph TD;
     Client((Web Browser)) -->|HTTP Rest API| Nginx(Vite/React SPA);
     Client -->|HTTP /api/*| Backend(NestJS Monolith);
-    
+
     Backend -->|TypeORM| DB[(PostgreSQL)];
     Backend -->|SMTP| MailServer[Mail Provider];
-    
+
     SePay[SePay Webhooks API] -->|POST /webhook| Backend;
-    
+
     subgraph Backend Core Modules
         NestAuth[Auth/JWT]
         NestCart[Cart Domain]
@@ -99,28 +102,31 @@ graph TD;
 ```
 
 **Key Design Decisions:**
+
 1. **Modular Monolith:** Deployment is kept simple with a single backend instance, but domains are isolated internally using standard NestJS module patterns (`controllers`, `services`, `dtos`, `entities`). This makes it possible to extract into microservices later if needed.
 2. **Client-side Routing & Server State:** The React SPA uses `react-router-dom` for views and `TanStack Query` for caching server data, reducing the need for complex global state management.
 
 ---
 
 <!-- Updated: Added 'Why these choices?' explanations -->
+
 ## Tech Stack & Dependencies
 
-- **Backend:** 
-  - **NestJS 11** & **TypeScript:** Typed backend framework with decorator-based architecture. 
-  - **TypeORM & PostgreSQL:** Relational database for e-commerce data. 
-  - **Bcrypt & JWT:** Password hashing and stateless authentication. 
+- **Backend:**
+  - **NestJS 11** & **TypeScript:** Typed backend framework with decorator-based architecture.
+  - **TypeORM & PostgreSQL:** Relational database for e-commerce data.
+  - **Bcrypt & JWT:** Password hashing and stateless authentication.
   - **@nestjs-modules/mailer (EJS):** Templating for transactional emails.
-- **Frontend:** 
-  - **React 19 & Vite 6:** Fast HMR and build tooling. 
-  - **TailwindCSS 4 & shadcn/ui:** Component library with full source ownership. 
+- **Frontend:**
+  - **React 19 & Vite 6:** Fast HMR and build tooling.
+  - **TailwindCSS 4 & shadcn/ui:** Component library with full source ownership.
   - **Zustand 5 & TanStack Query 5:** Client state management with server data caching.
 - **Infra:** Docker & Docker Compose.
 
 ---
 
 <!-- Updated: Detailed key module paths -->
+
 ## Project Structure & Key Modules
 
 ### High-level Structure
@@ -151,6 +157,7 @@ Web-Ecom/
 ## Setup & Installation (Docker & Local)
 
 ### Quick Start (Docker)
+
 Prerequisites: **Docker** and **Docker Desktop** installed and running.
 
 ```bash
@@ -163,12 +170,13 @@ docker compose up -d --build
 ```
 
 Services (defaults):
+
 - **Frontend:** http://localhost (mapped 80:80)
 - **Backend API:** http://localhost:3000
 - **Swagger Docs:** http://localhost:3000/api/docs
 - **PostgreSQL:** localhost:5432 (user: ecom_user, db: ecom_db)
 
-*Note: The compose file sets default JWT and SMTP placeholders. Change them for production deployments. Uploaded files are persisted via volume: `./backend/uploads → /app/uploads`.*
+_Note: The compose file sets default JWT and SMTP placeholders. Change them for production deployments. Uploaded files are persisted via volume: `./backend/uploads → /app/uploads`._
 
 ### Local Development
 
@@ -183,6 +191,7 @@ docker compose up -d postgres
 ```
 
 **Backend (NestJS)**
+
 ```bash
 cd backend
 pnpm install
@@ -192,6 +201,7 @@ pnpm seed      # Seed sample data
 ```
 
 **Frontend (React)**
+
 ```bash
 cd frontend
 pnpm install
@@ -202,44 +212,111 @@ pnpm dev       # Start Vite dev server
 ---
 
 <!-- Updated: Converted Configuration to tables -->
+
 ## Environment Variables
 
 ### Backend (`backend/.env.[environment]`)
 
-| Variable | Description | Example |
-|---|---|---|
-| `NODE_ENV` | Application environment phase | `development` / `production` |
-| `PORT` | API Server Port | `3000` |
-| `DATABASE_*` | Postgres Database Credentials connection config | `localhost`, `5432`, `ecom_user`, `ecom_db`|
-| `JWT_SECRET` | Cryptographic signature key | `replace-with-a-strong-secret` |
-| `JWT_EXPIRATION_TIME` | Access Token lifetime | `1h` |
-| `JWT_REFRESH_EXPIRATION_TIME`| Refresh Token lifetime | `7d` |
-| `MAIL_HOST` / `SMTP_*` | Target SMTP server & credentials for transactional mail | `smtp.gmail.com` |
-| `SEPAY_*` | Variables for generating SePay Bank QR | `SEPAY_BANK_CODE=VCB` |
+| Variable                      | Description                                             | Example                                     |
+| ----------------------------- | ------------------------------------------------------- | ------------------------------------------- |
+| `NODE_ENV`                    | Application environment phase                           | `development` / `production`                |
+| `PORT`                        | API Server Port                                         | `3000`                                      |
+| `DATABASE_*`                  | Postgres Database Credentials connection config         | `localhost`, `5432`, `ecom_user`, `ecom_db` |
+| `JWT_SECRET`                  | Cryptographic signature key                             | `replace-with-a-strong-secret`              |
+| `JWT_EXPIRATION_TIME`         | Access Token lifetime                                   | `1h`                                        |
+| `JWT_REFRESH_EXPIRATION_TIME` | Refresh Token lifetime                                  | `7d`                                        |
+| `MAIL_HOST` / `SMTP_*`        | Target SMTP server & credentials for transactional mail | `smtp.gmail.com`                            |
+| `SEPAY_*`                     | Variables for generating SePay Bank QR                  | `SEPAY_BANK_CODE=VCB`                       |
 
 ### Frontend (`frontend/.env`)
 
-| Variable | Description | Example |
-|---|---|---|
+| Variable       | Description                              | Example                 |
+| -------------- | ---------------------------------------- | ----------------------- |
 | `VITE_API_URL` | The base URL for the backend API queries | `http://localhost:3000` |
 
 ---
 
+## Deployment
+
+### Docker Hub Images
+
+Pre-built images are available on Docker Hub:
+
+- **Backend:** `haongo123/laptop-shop-backend:latest`
+- **Frontend:** `haongo123/laptop-shop-frontend:latest`
+
+### Deploy to PaaS
+
+**Backend - Required Environment Variables:**
+
+The backend requires **ALL** of the following environment variables to start successfully:
+
+```bash
+docker run -p 3000:3000 \
+  -e NODE_ENV=production \
+  -e PORT=3000 \
+  -e DATABASE_HOST=your-postgres-host \
+  -e DATABASE_PORT=5432 \
+  -e DATABASE_USERNAME=your-db-user \
+  -e DATABASE_PASSWORD=your-db-password \
+  -e DATABASE_NAME=your-db-name \
+  -e JWT_SECRET=47440ad9d5c1a938d7c5d7d7071e6395 \
+  -e JWT_EXPIRATION_TIME=1h \
+  -e JWT_REFRESH_EXPIRATION_TIME=7d \
+  -e MAIL_HOST=sandbox.smtp.mailtrap.io \
+  -e SMTP_USERNAME=bad03a58a727cf \
+  -e SMTP_PASSWORD=1a69be052b47af \
+  haongo123/laptop-shop-backend:latest
+```
+
+**⚠️ Important Notes:**
+- **Database variables** (`DATABASE_*`): Must point to your PostgreSQL instance
+- **JWT_SECRET**: Change this to a strong random string in production (example value is for demo only)
+- **SMTP credentials**: The example uses Mailtrap sandbox (emails won't actually be sent). For production, use a real SMTP service (Gmail, SendGrid, AWS SES, etc.)
+- **Missing any of these variables will cause startup failure**
+
+**Frontend:**
+
+```bash
+docker run -p 80:80 \
+  haongo123/laptop-shop-frontend:latest
+```
+
+**Note:** Most PaaS platforms allow you to specify the Docker image and environment variables through their UI/CLI without needing `docker run` commands directly.
+
+### Push Your Own Images (Optional)
+
+If you want to customize and push your own images:
+
+1. Update `docker-compose.yml` with your Docker Hub username
+2. Build and push:
+
+```bash
+docker login
+docker compose build
+docker compose push
+```
+
+---
+
 <!-- Added: Requested Usage Code Examples -->
+
 ## Usage Code Examples
 
 ### 1. Creating an Order (Frontend API Service)
+
 ```typescript
-import api from './api';
+import api from "./api";
 
 export const createOrder = async (payload: CreateOrderRequest) => {
   // Makes an authenticated POST request to generate an order from cart
-  const response = await api.post('/api/orders', payload);
+  const response = await api.post("/api/orders", payload);
   return response.data; // Includes the Order details and a possible SePay QR URL
 };
 ```
 
 ### 2. Processing Webhooks (Backend SePay Integration)
+
 ```typescript
 @Post('webhook/sepay')
 async handleSePayWebhook(@Body() payload: SePayWebhookDto) {
@@ -260,7 +337,7 @@ async handleSePayWebhook(@Body() payload: SePayWebhookDto) {
 - **Payments:** `POST /api/payment/create`, `POST /api/payment/webhook/sepay`, `GET /api/payment/methods`, `POST /api/payment/switch/:orderId`
 - **Admin:** `GET /api/admin/orders`, `PATCH /api/admin/orders/:orderId/status`, `GET /api/admin/dashboard/summary`
 
-*For full definitions, navigate to `http://localhost:3000/api/docs` while the application is running to view the interactive Swagger Documentation.*
+_For full definitions, navigate to `http://localhost:3000/api/docs` while the application is running to view the interactive Swagger Documentation._
 
 ---
 
@@ -281,6 +358,7 @@ async handleSePayWebhook(@Body() payload: SePayWebhookDto) {
 ---
 
 <!-- Added: Development Guidelines section -->
+
 ## Development Guidelines
 
 - **Code Style:** Prettier is used for formatting. For consistency, use `pnpm run format` (if available) before committing.
@@ -290,21 +368,23 @@ async handleSePayWebhook(@Body() payload: SePayWebhookDto) {
 ---
 
 <!-- Added: Troubleshooting section -->
+
 ## Troubleshooting
 
-| Issue | Potential Solution |
-|---|---|
-| **E2E/API Connection Refused** | Ensure Docker backend container is bound to `3000`. Double check `VITE_API_URL` in frontend `.env`. |
-| **SePay Webhook Failing** | If `SEPAY_WEBHOOK_SECRET` is set in development, make sure the mock webhook contains the correct HMAC-SHA256 signature algorithm. |
-| **Blank Product Images** | Check if the backend volume `./backend/uploads:/app/uploads` is correctly mapped in your docker-compose.yml, and ensure the folder actually exists locally. |
+| Issue                          | Potential Solution                                                                                                                                          |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **E2E/API Connection Refused** | Ensure Docker backend container is bound to `3000`. Double check `VITE_API_URL` in frontend `.env`.                                                         |
+| **SePay Webhook Failing**      | If `SEPAY_WEBHOOK_SECRET` is set in development, make sure the mock webhook contains the correct HMAC-SHA256 signature algorithm.                           |
+| **Blank Product Images**       | Check if the backend volume `./backend/uploads:/app/uploads` is correctly mapped in your docker-compose.yml, and ensure the folder actually exists locally. |
 
 ---
 
 ## Testing
 
-Currently, test boilerplates exist structurally across the repositories. Manual testing endpoints exist inside Postman exports (if generated) and via the Swagger documentation link. 
+Currently, test boilerplates exist structurally across the repositories. Manual testing endpoints exist inside Postman exports (if generated) and via the Swagger documentation link.
 
 Future automated testing plans include:
+
 - `Jest` / `Supertest` specs for Backend Use Cases & API Layers.
 - `Vitest` unit tests and `Playwright` E2E flows for Frontend.
 
@@ -313,6 +393,7 @@ Future automated testing plans include:
 ## Demo Accounts (Seeded Data)
 
 For rapid evaluations on cloned repositories where `pnpm seed` has been run:
+
 - **Admin:** `admin@gmail.com` / `admin123`
 - **Customer:** `customer@gmail.com` / `123456789`
 
