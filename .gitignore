@@ -3,3 +3,4 @@
 /.github
 /.continue
 .blackboxrules
+frontend/.env

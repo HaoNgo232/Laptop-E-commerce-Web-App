@@ -9,13 +9,25 @@ import type { ApiError } from "@/types";
 import { LoginResponse } from "@/types";
 import { authService } from "@/services/authService";
 
+// Extend Window interface for runtime env
+declare global {
+  interface Window {
+    env?: {
+      VITE_API_URL?: string;
+    };
+  }
+}
+
 class ApiClient {
   private readonly client: AxiosInstance;
   private refreshTokenPromise: Promise<LoginResponse> | null = null;
 
   constructor() {
+    // Priority: window.env (runtime) > import.meta.env (build-time) > fallback
+    const apiUrl = window.env?.VITE_API_URL || import.meta.env.VITE_API_URL || "http://localhost:3000";
+    
     this.client = axios.create({
-      baseURL: import.meta.env.VITE_API_URL || "http://localhost:3000",
+      baseURL: apiUrl,
       timeout: 10000,
       headers: {
         "Content-Type": "application/json",

@@ -28,8 +28,15 @@ COPY --from=build /app/dist /usr/share/nginx/html
 # Copy nginx config (tùy chọn)
 COPY nginx.conf /etc/nginx/nginx.conf
 
+# Copy entrypoint script
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Set default API URL (can be overridden at runtime)
+ENV VITE_API_URL=http://localhost:3000
+
 # Expose port 80
 EXPOSE 80
 
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Use entrypoint script
+ENTRYPOINT ["/entrypoint.sh"]

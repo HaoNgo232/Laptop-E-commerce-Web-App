@@ -277,10 +277,18 @@ docker run -p 3000:3000 \
 
 **Frontend:**
 
+The frontend supports **runtime environment configuration** - you can use the same image for all environments:
+
 ```bash
 docker run -p 80:80 \
+  -e VITE_API_URL=http://localhost:3000 \
   haongo123/laptop-shop-frontend:latest
 ```
+
+**Environment Variables:**
+- `VITE_API_URL` (Optional): Backend API URL. Defaults to `http://localhost:3000` if not set.
+
+**✨ Key Feature:** Unlike traditional React apps, this frontend uses runtime configuration injection. You can change the API URL without rebuilding the image - just pass a different `-e VITE_API_URL` value.
 
 **Note:** Most PaaS platforms allow you to specify the Docker image and environment variables through their UI/CLI without needing `docker run` commands directly.
 

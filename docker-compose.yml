@@ -62,6 +62,8 @@ services:
       dockerfile: Dockerfile
     container_name: ecom-frontend
     restart: unless-stopped
+    environment:
+      VITE_API_URL: http://localhost:3000
     ports:
       - "80:80"
     depends_on:
