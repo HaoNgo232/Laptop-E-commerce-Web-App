@@ -22,7 +22,9 @@ export function useHomepage() {
 
   // Carousel state
   const [currentSlide, setCurrentSlide] = useState(0);
-  const featuredProducts = products.slice(0, 8);
+  
+  // Safe products check
+  const featuredProducts = Array.isArray(products) ? products.slice(0, 8) : [];
 
   // Load data khi component mount
   useEffect(() => {
@@ -56,16 +58,18 @@ export function useHomepage() {
 
   // Handle carousel navigation
   const handlePrevSlide = () => {
+    if (featuredProducts.length === 0) return;
+    const totalSlides = Math.ceil(featuredProducts.length / 4);
     setCurrentSlide(
-      (prev) =>
-        (prev - 1 + Math.ceil(featuredProducts.length / 4)) %
-        Math.ceil(featuredProducts.length / 4),
+      (prev) => (prev - 1 + totalSlides) % totalSlides,
     );
   };
 
   const handleNextSlide = () => {
+    if (featuredProducts.length === 0) return;
+    const totalSlides = Math.ceil(featuredProducts.length / 4);
     setCurrentSlide(
-      (prev) => (prev + 1) % Math.ceil(featuredProducts.length / 4),
+      (prev) => (prev + 1) % totalSlides,
     );
   };
 

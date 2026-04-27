@@ -23,8 +23,13 @@ class ApiClient {
   private refreshTokenPromise: Promise<LoginResponse> | null = null;
 
   constructor() {
-    // Priority: window.env (runtime) > import.meta.env (build-time) > fallback
-    const apiUrl = window.env?.VITE_API_URL || import.meta.env.VITE_API_URL || "http://localhost:3000";
+    // Check if window.env exists and has a valid URL (not the placeholder string)
+    const runtimeUrl = window.env?.VITE_API_URL;
+    const isValidRuntimeUrl = runtimeUrl && runtimeUrl !== "${VITE_API_URL}";
+    
+    const apiUrl = isValidRuntimeUrl 
+      ? runtimeUrl 
+      : import.meta.env.VITE_API_URL || "http://localhost:3000";
     
     this.client = axios.create({
       baseURL: apiUrl,
@@ -52,7 +57,18 @@ class ApiClient {
 
     // Response interceptor: handle errors
     this.client.interceptors.response.use(
-      (response: AxiosResponse) => response,
+      (response: AxiosResponse) => {
+        // Validate JSON response
+        const contentType = response.headers["content-type"];
+        if (contentType && !contentType.includes("application/json")) {
+          console.error("Non-JSON response received:", contentType);
+          return Promise.reject({
+            message: "Mã phản hồi không hợp lệ (không phải JSON)",
+            statusCode: response.status,
+          });
+        }
+        return response;
+      },
       async (error: AxiosError) => {
         const originalRequest = error.config as InternalAxiosRequestConfig & {
           _retry?: boolean;
@@ -83,7 +99,6 @@ class ApiClient {
             return await this.client(originalRequest);
           } catch (refreshError) {
             console.error("Token hết hạn, đang logout...");
-            // Logout khi refresh thất bại
             authService.logout();
             return Promise.reject(
               this.transformError(refreshError as AxiosError),
@@ -99,6 +114,12 @@ class ApiClient {
 
   private transformError(error: AxiosError): ApiError {
     if (error.response?.data) {
+      if (typeof error.response.data === 'string' && (error.response.data.startsWith('<!doctype') || error.response.data.startsWith('<html'))) {
+          return {
+            message: "Máy chủ trả về HTML thay vì JSON. Có thể route API chưa đúng.",
+            statusCode: error.response.status || 500,
+          };
+      }
       return error.response.data as ApiError;
     }
 
@@ -109,48 +130,28 @@ class ApiClient {
   }
 
   async get<T>(url: string, params?: object): Promise<T> {
-    try {
-      const response = await this.client.get(url, { params });
-      return response.data;
-    } catch (error) {
-      throw this.transformError(error as AxiosError);
-    }
+    const response = await this.client.get<T>(url, { params });
+    return response.data;
   }
 
   async post<T>(url: string, data?: object): Promise<T> {
-    try {
-      const response = await this.client.post(url, data);
-      return response.data;
-    } catch (error) {
-      throw this.transformError(error as AxiosError);
-    }
+    const response = await this.client.post<T>(url, data);
+    return response.data;
   }
 
   async put<T>(url: string, data?: object): Promise<T> {
-    try {
-      const response = await this.client.put(url, data);
-      return response.data;
-    } catch (error) {
-      throw this.transformError(error as AxiosError);
-    }
+    const response = await this.client.put<T>(url, data);
+    return response.data;
   }
 
   async patch<T>(url: string, data?: object): Promise<T> {
-    try {
-      const response = await this.client.patch(url, data);
-      return response.data;
-    } catch (error) {
-      throw this.transformError(error as AxiosError);
-    }
+    const response = await this.client.patch<T>(url, data);
+    return response.data;
   }
 
   async delete<T>(url: string): Promise<T> {
-    try {
-      const response = await this.client.delete(url);
-      return response.data;
-    } catch (error) {
-      throw this.transformError(error as AxiosError);
-    }
+    const response = await this.client.delete<T>(url);
+    return response.data;
   }
 }
 
